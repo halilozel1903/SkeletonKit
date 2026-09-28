@@ -81,7 +81,10 @@ struct SkeletonLineWidthsTests {
 struct AnnouncementThrottleTests {
     @Test func firstAnnouncementIsAllowed() {
         var throttle = AnnouncementThrottle(interval: 2)
-        #expect(throttle.shouldAnnounce(at: 100))
+        do {
+            let result = throttle.shouldAnnounce(at: 100)
+            #expect(result)
+        }
         #expect(throttle.lastAnnouncement == 100)
     }
 
@@ -93,14 +96,29 @@ struct AnnouncementThrottleTests {
 
     @Test func laterLoadingAnnouncesAgain() {
         var throttle = AnnouncementThrottle(interval: 2)
-        #expect(throttle.shouldAnnounce(at: 10))
-        #expect(!throttle.shouldAnnounce(at: 11.9))
-        #expect(throttle.shouldAnnounce(at: 12))
+        do {
+            let result = throttle.shouldAnnounce(at: 10)
+            #expect(result)
+        }
+        do {
+            let result = throttle.shouldAnnounce(at: 11.9)
+            #expect(!result)
+        }
+        do {
+            let result = throttle.shouldAnnounce(at: 12)
+            #expect(result)
+        }
     }
 
     @Test func clockGoingBackwardsAllowsAnnouncement() {
         var throttle = AnnouncementThrottle(interval: 2)
-        #expect(throttle.shouldAnnounce(at: 50))
-        #expect(throttle.shouldAnnounce(at: 10))
+        do {
+            let result = throttle.shouldAnnounce(at: 50)
+            #expect(result)
+        }
+        do {
+            let result = throttle.shouldAnnounce(at: 10)
+            #expect(result)
+        }
     }
 }
